@@ -1,4 +1,4 @@
 User-Agent: *
 Allow: /
 
-Sitemap: https://next-mw-docs.vercel.app/docs/sitemap.xml
+Sitemap: https://next-mw-docs.vercel.app/sitemap.xml
