@@ -5,3 +5,7 @@
 .code-block pre code {
   @apply !bg-transparent;
 }
+
+.npm-button path {
+  @apply !fill-white;
+}
