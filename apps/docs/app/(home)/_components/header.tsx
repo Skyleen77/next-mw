@@ -22,26 +22,26 @@ export const Header = () => {
               size="icon"
               asChild
             >
-              <Link
+              <a
                 href="https://github.com/Skyleen77/next-mw/tree/main/packages/next-mw"
                 target="_blank"
                 rel="noreferrer"
               >
                 <FaGithub className="!size-6 text-white npm-button" />
-              </Link>
+              </a>
             </Button>
             <Button
               className="bg-[#CB3837] hover:bg-[#CB3837]/90 rounded-full"
               size="icon"
               asChild
             >
-              <Link
+              <a
                 href="https://www.npmjs.com/package/next-mw"
                 target="_blank"
                 rel="noreferrer"
               >
                 <GrNpm className="!size-6 text-white npm-button" />
-              </Link>
+              </a>
             </Button>
           </div>
 
