@@ -1,4 +1,4 @@
-<img src="https://next-mw-docs.vercel.app/logo-light.png" style="height:30px;" />
+<img src="https://next-mw-docs.vercel.app/logo-dark.png" style="height:30px;" />
 
 <br />
 
