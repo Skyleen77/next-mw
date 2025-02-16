@@ -2,6 +2,7 @@ import { createPreset } from 'fumadocs-ui/tailwind-plugin';
 import svgToTinyDataUri from 'mini-svg-data-uri';
 import type { Config } from 'tailwindcss';
 import tailwindcssAnimate from 'tailwindcss-animate';
+// @ts-ignore
 import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette';
 
 const config = {
