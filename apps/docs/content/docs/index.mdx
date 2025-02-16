@@ -4,6 +4,8 @@ description: Why Next MW?
 ---
 
 import { File, Folder, Files } from 'fumadocs-ui/components/files';
+import { SiNpm } from "react-icons/si";
+import { FaGithub } from "react-icons/fa6";
 
 ## Next MW – A Better Middleware Management for Next.js
 
@@ -56,6 +58,10 @@ Then, you **compose them** in `middleware.ts` and execute them sequentially. Eac
 ## Links
 
 <Cards>
-  <Card title="NPM" href="https://www.npmjs.com/package/next-mw" />
-  <Card title="GitHub" href="https://github.com/Skyleen77/next-mw" />
+  <Card title="NPM" href="https://www.npmjs.com/package/next-mw" icon={<SiNpm />}>
+    Check the package on NPM
+  </Card>
+  <Card title="GitHub" href="https://github.com/Skyleen77/next-mw" icon={<FaGithub />}>
+    Check the repository on GitHub
+  </Card>
 </Cards>
