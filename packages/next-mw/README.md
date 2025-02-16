@@ -1,4 +1,6 @@
-# NEXT MW
+<div style="display:flex;justify-content:center;align-items:center">
+  <img src="https://next-mw-docs.vercel.app/logo-light.png" style="height:30px;margin-bottom:20px;" />
+</div>
 
 **NEXT MW** is a package that lets you compose multiple Next.js middlewares together.  
 Each middleware can have its own configuration (using matchers similar to Next.js) and they are executed in the order you specify.
