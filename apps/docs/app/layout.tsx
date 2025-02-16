@@ -8,6 +8,19 @@ const inter = Inter({
   subsets: ['latin'],
 });
 
+export const metadata = {
+  title: 'Next MW - Next.js Middlewares',
+  description: 'Create multiple middlewares quickly and easily in Next.js',
+  keywords: [
+    'next',
+    'middleware',
+    'middlewares',
+    'next-mw',
+    'next-middleware',
+    'next-middlewares',
+  ],
+};
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>

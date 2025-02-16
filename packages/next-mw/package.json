@@ -11,11 +11,19 @@
   ],
   "author": "Skyleen",
   "license": "MIT",
+  "keywords": [
+    "next",
+    "middleware",
+    "middlewares",
+    "next-mw",
+    "next-middleware",
+    "next-middlewares"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Skyleen77/next-mw/tree/main/packages/next-mw"
   },
-  "readme": "https://next-middlewares.vercel.app",
+  "readme": "https://next-mw-docs.vercel.app/",
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "test": "jest",
