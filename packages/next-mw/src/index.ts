@@ -20,7 +20,6 @@ export type MiddlewareModule = {
   middleware: NextMiddleware;
   config?: {
     matcher?: Matcher;
-    [key: string]: any;
   };
 };
 
@@ -32,7 +31,7 @@ export type MiddlewareModule = {
  * @param modules - List of imported middleware modules.
  * @returns The composed middleware function.
  */
-export function middlewares(...modules: MiddlewareModule[]) {
+export function middlewares(...modules: MiddlewareModule[]): NextMiddleware {
   return async function (req: NextRequest, ev: NextFetchEvent) {
     for (const module of modules) {
       // If a matcher is defined, check if it matches the request.
@@ -47,13 +46,3 @@ export function middlewares(...modules: MiddlewareModule[]) {
     return NextResponse.next();
   };
 }
-
-/**
- * Default configuration to be exported in middleware.ts.
- * This configuration avoids processing static files, API routes, etc.
- */
-export const config = {
-  matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
-  ],
-};

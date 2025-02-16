@@ -1,0 +1,63 @@
+---
+title: Middlewares
+description: How the middlewares works
+---
+
+## Usage
+
+### Use `middlewares` function in `middleware.ts`
+
+The middlewares function is used in the `middleware.ts` file to **combine your different middlewares**.
+
+```typescript
+// In middleware.ts
+import { middlewares } from 'next-mw';
+
+export const middleware = middlewares(middleware1, middleware2, ...);
+```
+
+### Make your own middleware
+
+Create a middleware file in the `middlewares` folder. For example:
+
+```typescript
+// middlewares/redirect.ts
+export function middleware(request: NextRequest) {
+  return NextResponse.redirect(new URL('/home', request.url))
+}
+```
+
+## TypeScript
+
+### `middlewares`
+
+```typescript
+middlewares(...modules: MiddlewareModule[]): NextMiddleware;
+```
+
+### Types
+
+#### MiddlewareModule
+
+```typescript
+type MiddlewareModule = {
+  middleware: NextMiddleware;
+  config?: {
+    matcher?: Matcher;
+  };
+};
+```
+
+#### NextMiddleware
+
+```typescript
+type NextMiddleware = (
+  req: NextRequest,
+  ev: NextFetchEvent,
+) => Promise<NextResponse | void> | NextResponse | void;
+```
+
+#### Matcher
+
+See [matcher](/docs/matcher).
+

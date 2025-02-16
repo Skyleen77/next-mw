@@ -1,0 +1,109 @@
+---
+title: Quick Start
+description: How to use Next MW in your Next.js project
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+## Installation
+
+Install via your favorite package manager:
+
+<Tabs groupId="packageManager" items={['npm', 'pnpm', "yarn", "bun"]} persist>
+  <Tab value="npm">
+    ```bash
+    npm install next-mw
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm add next-mw
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn add next-mw
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bun add next-mw
+    ```
+  </Tab>
+</Tabs>
+
+<Callout title="Note">Next.js `>=13.1.0` must be installed in your project (it's listed as a peer dependency).</Callout>
+
+## Usage
+
+### Compose Middlewares
+
+Create a file `middleware.ts` at the root of your Next.js project:
+
+```typescript
+// middleware.ts
+import { middlewares } from 'next-mw';
+
+import * as authMiddleware from './middlewares/auth-middleware';
+import * as adminMiddleware from './middlewares/admin-middleware';
+
+export const middleware = middlewares(authMiddleware, adminMiddleware);
+
+export const config = {
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+  ],
+};
+```
+
+### Example Middlewares
+
+#### Authentication Middleware
+
+```typescript
+// middlewares/auth-middleware.ts
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  const token = request.cookies.get('authToken');
+  if (!token) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/dashboard/:path*', '/profile/:path*'],
+};
+```
+
+#### Admin Authorization Middleware with Complex Matcher
+
+```typescript
+// middlewares/admin-middleware.ts
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  const isAdmin = request.cookies.get('isAdmin');
+  if (!isAdmin || isAdmin.value !== 'true') {
+    return NextResponse.redirect(new URL('/unauthorized', request.url));
+  }
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: [
+    {
+      source: '/admin/:path*',
+      regexp: '^/admin/(.*)$',
+      locale: false,
+      has: [{ type: 'header', key: 'x-admin-check', value: 'check' }],
+      missing: [{ type: 'cookie', key: 'bypassAdmin', value: 'true' }],
+    },
+    '/admin/:path*',
+  ],
+};
+```

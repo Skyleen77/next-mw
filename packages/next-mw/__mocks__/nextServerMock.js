@@ -38,7 +38,7 @@ class NextRequest {
       },
     };
     this.cookies = {
-      get: (name) => null,
+      get: () => null,
     };
   }
 }

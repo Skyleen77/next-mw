@@ -1,0 +1,97 @@
+---
+title: Matcher
+description: How the matcher works?
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+We've studied how the Next.js matcher works, so we've come up with a **matcher that works exactly the same way**.
+
+## Usage
+
+### In `middleware.ts`
+
+The following matcher excludes API, static files, and metadata routes, ensuring the middleware applies only to other paths. 
+
+```typescript
+export const config = {
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+  ],
+};
+```
+
+<Callout title="Note">
+  Next.js requires this configuration to be inline in `middleware.ts` for static analysis. If you export it from an external file, Next.js won't detect it at build time, so you must define it locally. That's why we haven't exported it from our library.
+</Callout>
+
+### In your middlewares
+
+You'll be able to define your middleware matcher **exactly as you normally do with Next.js**.
+
+You can do simple matcher like this:
+
+```typescript
+export const config = {
+  matcher: '/about/:path*',
+};
+```
+
+Or more complex ones like this:
+
+```typescript
+export const config = {
+  matcher: [
+    {
+      source: '/api/*',
+      regexp: '^/api/(.*)',
+      locale: false,
+      has: [
+        { type: 'header', key: 'Authorization', value: 'Bearer Token' },
+        { type: 'query', key: 'userId', value: '123' },
+      ],
+      missing: [{ type: 'cookie', key: 'session', value: 'active' }],
+    },
+  ],
+};
+```
+
+## TypeScript
+
+```typescript
+config?: { matcher?: Matcher; };
+```
+
+### Types
+
+#### Matcher
+
+```typescript
+type Matcher = string | MatcherCondition | (string | MatcherCondition)[];
+```
+
+#### MatcherObject
+
+```typescript
+interface MatcherCondition {
+  source: string;
+  regexp?: string;
+  locale?: boolean;
+  has?: MatcherElement[];
+  missing?: MatcherElement[];
+}
+```
+
+#### MatcherElement
+
+```typescript
+type MatcherElement =
+  | { type: AllowedMatcherType; key: string; value?: string }
+  | { type: string; key: string; value?: string };
+```
+
+#### AllowedMatcherType
+
+```typescript
+type AllowedMatcherType = 'header' | 'query' | 'cookie';
+```

@@ -1,0 +1,12 @@
+{
+  "title": "Next MW",
+  "root": true,
+  "pages": [
+    "---Guide---",
+    "index",
+    "quick-start",
+    "---Advanced---",
+    "middlewares",
+    "matcher"
+  ]
+}

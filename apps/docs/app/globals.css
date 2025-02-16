@@ -1,0 +1,7 @@
+.code-block pre {
+  @apply !bg-transparent !p-0;
+}
+
+.code-block pre code {
+  @apply !bg-transparent;
+}

@@ -1,6 +1,4 @@
-import '@types/jest';
-
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextFetchEvent, NextRequest, NextResponse } from 'next/server';
 import { middlewares } from '../src/index';
 
 describe('middlewares composition', () => {
@@ -11,10 +9,10 @@ describe('middlewares composition', () => {
   it('should return NextResponse.next() if no middleware returns a response', async () => {
     // Create a fake request with URL '/about'
     const req = new NextRequest('http://localhost/about');
-    const ev = {} as any;
+    const ev = {} as NextFetchEvent;
 
     // Define a middleware that does not return any response.
-    const mw1 = async (req: NextRequest, ev: any) => undefined;
+    const mw1 = async () => undefined;
     const composed = middlewares({ middleware: mw1 });
 
     const res = await composed(req, ev);
@@ -27,14 +25,14 @@ describe('middlewares composition', () => {
    */
   it('should return the response from the first middleware that returns a response', async () => {
     const req = new NextRequest('http://localhost/about');
-    const ev = {} as any;
+    const ev = {} as NextFetchEvent;
 
     // Middleware 1 returns a redirect response.
-    const mw1 = async (req: NextRequest, ev: any) => {
+    const mw1 = async (req: NextRequest) => {
       return NextResponse.redirect(new URL('/login', req.url));
     };
     // Middleware 2 returns a next response (should not be executed)
-    const mw2 = async (req: NextRequest, ev: any) => NextResponse.next();
+    const mw2 = async () => NextResponse.next();
 
     const composed = middlewares({ middleware: mw1 }, { middleware: mw2 });
     const res = await composed(req, ev);
@@ -50,10 +48,10 @@ describe('middlewares composition', () => {
    */
   it('should skip middleware whose matcher does not match the request', async () => {
     const req = new NextRequest('http://localhost/not-about');
-    const ev = {} as any;
+    const ev = {} as NextFetchEvent;
 
     // Define a middleware that should only run for URL '/about'
-    const mw1 = async (req: NextRequest, ev: any) => {
+    const mw1 = async (req: NextRequest) => {
       return NextResponse.redirect(new URL('/matched', req.url));
     };
     // Provide configuration with a matcher: '/about'
@@ -73,10 +71,10 @@ describe('middlewares composition', () => {
   it('should execute middleware with complex matcher when conditions are met', async () => {
     // Request URL that matches the source '/api/:path*'
     const req = new NextRequest('http://localhost/api/data?userId=123');
-    const ev = {} as any;
+    const ev = {} as NextFetchEvent;
 
     // Create a middleware that returns a redirect when executed
-    const mw1 = async (req: NextRequest, ev: any) => {
+    const mw1 = async (req: NextRequest) => {
       return NextResponse.redirect(new URL('/api-matched', req.url));
     };
     // Create a middleware module with complex matcher configuration:
@@ -115,10 +113,10 @@ describe('middlewares composition', () => {
    */
   it('should skip middleware with complex matcher when conditions are not met', async () => {
     const req = new NextRequest('http://localhost/api/data?userId=123');
-    const ev = {} as any;
+    const ev = {} as NextFetchEvent;
 
     // Create a middleware that returns a redirect if executed.
-    const mw1 = async (req: NextRequest, ev: any) => {
+    const mw1 = async (req: NextRequest) => {
       return NextResponse.redirect(new URL('/api-matched', req.url));
     };
     // Create a middleware module with complex matcher configuration.

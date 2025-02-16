@@ -1,0 +1,61 @@
+---
+title: Introduction
+description: Why Next MW?
+---
+
+import { File, Folder, Files } from 'fumadocs-ui/components/files';
+
+## Next MW – A Better Middleware Management for Next.js
+
+Next.js offers a **simple and efficient middleware system**. However, it has a **major limitation**: there is only **one `middleware.ts` file** for the entire application.
+
+### The Problem: Only One Global Middleware
+
+In Next.js, the `middleware.ts` file **can only contain a single middleware**, leading to several issues:
+- **You can't have multiple independent middlewares:** all logic must be merged into a single function.
+- **Increasing complexity:** adding features (auth, logs, rate-limiting, etc.) forces everything into one file, making maintenance difficult.
+- **Incompatibility with some libraries:** integrating multiple external middlewares is challenging since they must be manually combined.
+
+### Easily Compose Multiple Middlewares
+
+**Next MW** solves this issue by allowing you to **compose multiple independent middlewares** and execute them sequentially, while keeping full compatibility with Next.js' native middleware system.
+
+Unlike Next.js, which forces you to use a **single global middleware**, **Next MW** lets you define **multiple middlewares separately**, each with its own matcher to target specific routes.
+
+### How Does It Work?
+
+With Next MW, you can structure your code like this:
+ 
+<Files>
+  <Folder name="middlewares" defaultOpen>
+    <File name="auth-middleware.ts" />
+    <File name="admin-middleware.ts" />
+    <File name="rate-limit-middleware.ts" />
+  </Folder>
+  <File name="middleware.ts" />
+</Files>
+
+Then, you **compose them** in `middleware.ts` and execute them sequentially. Each middleware remains **independent**, with its own configuration and logic.
+
+### Why Use Next MW?
+
+✅ **Total modularity** – No more bloated `middleware.ts`; each middleware is independent.
+
+✅ **Fully compatible with Next.js** – Uses the native Next.js middleware system and matchers.
+
+✅ **Sequential execution** – Middlewares run in order and stop as soon as one returns a response.
+
+✅ **Easy integration** – Allows you to use multiple middlewares, including third-party ones, without complex hacks.
+
+✅ **TypeScript support** – Written in TypeScript with proper type definitions.
+
+✅ **Compatible with App and Pages directory** – Works with both the `app` and `pages` directories.
+
+**🚀 With Next MW, manage your middlewares in a clear, modular, and scalable way in Next.js!**
+
+## Links
+
+<Cards>
+  <Card title="NPM" href="https://www.npmjs.com/package/next-mw" />
+  <Card title="GitHub" href="https://github.com/Skyleen77/next-mw" />
+</Cards>
