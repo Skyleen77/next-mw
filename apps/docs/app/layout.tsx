@@ -24,6 +24,12 @@ export const metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
+      <head>
+        <meta
+          name="google-site-verification"
+          content="DvEmYfEcqg4qdrj348IH1EyyCQXagUvrXC9JzHcE6nU"
+        />
+      </head>
       <body className="flex flex-col min-h-screen">
         <RootProvider
           theme={{
