@@ -5,7 +5,6 @@ import { Button } from '@workspace/ui/components/ui/button';
 import { ArrowRightIcon, Check, Copy } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
-import { NextLogo } from './next-logo';
 
 const command = 'npm install next-mw';
 
@@ -32,8 +31,7 @@ export const Hero = () => {
       >
         <h1 className="text-3xl md:text-4xl lg:text-[46px] font-semibold text-neutral-800 dark:text-white !leading-relaxed lg:!leading-snug text-start">
           Create <Highlight>multiple middlewares</Highlight> quickly and easily
-          in{' '}
-          <NextLogo className="lg:h-8 md:h-7 h-6 w-fit mb-[7px] -ml-2 inline" />
+          in Next.js
         </h1>
 
         <p className="lg:text-lg text-base text-neutral-500 dark:text-neutral-400 max-w-2xl">
