@@ -16,7 +16,8 @@ describe('middlewares composition', () => {
     const composed = middlewares({ middleware: mw1 });
 
     const res = await composed(req, ev);
-    expect(res.status).toBe(200);
+    expect(res).toBeDefined();
+    expect(res!.status).toBe(200);
   });
 
   /**
@@ -37,9 +38,10 @@ describe('middlewares composition', () => {
     const composed = middlewares({ middleware: mw1 }, { middleware: mw2 });
     const res = await composed(req, ev);
 
-    expect(res.status).toBe(307);
+    expect(res).toBeDefined();
+    expect(res!.status).toBe(307);
     // Extract pathname from location header for comparison.
-    const locationUrl = new URL(res.headers.get('location') as string);
+    const locationUrl = new URL(res!.headers.get('location') as string);
     expect(locationUrl.pathname).toBe('/login');
   });
 
@@ -62,7 +64,8 @@ describe('middlewares composition', () => {
 
     // Since the request does not match '/about', no middleware returns a response,
     // so the default NextResponse.next() is returned.
-    expect(res.status).toBe(200);
+    expect(res).toBeDefined();
+    expect(res!.status).toBe(200);
   });
 
   /**
@@ -103,8 +106,9 @@ describe('middlewares composition', () => {
     const composed = middlewares(mwModule);
     const res = await composed(req, ev);
 
-    expect(res.status).toBe(307);
-    const locationUrl = new URL(res.headers.get('location') as string);
+    expect(res).toBeDefined();
+    expect(res!.status).toBe(307);
+    const locationUrl = new URL(res!.headers.get('location') as string);
     expect(locationUrl.pathname).toBe('/api-matched');
   });
 
@@ -142,6 +146,7 @@ describe('middlewares composition', () => {
 
     // Since the conditions are not met, the middleware is skipped,
     // and NextResponse.next() (status 200) is returned.
-    expect(res.status).toBe(200);
+    expect(res).toBeDefined();
+    expect(res!.status).toBe(200);
   });
 });
