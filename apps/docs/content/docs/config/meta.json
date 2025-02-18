@@ -1,5 +1,5 @@
 {
   "title": "Config",
   "root": false,
-  "pages": ["matcher", "includes-excludes"]
+  "pages": ["matcher", "include-exclude"]
 }
