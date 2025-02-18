@@ -4,6 +4,7 @@ import {
   NextResponse,
 } from 'next/server';
 import { matchRequest, Matcher } from './matcher';
+import type { NextMiddlewareResult } from 'next/dist/server/web/types';
 
 /**
  * Type for a Next.js middleware function.
@@ -11,7 +12,7 @@ import { matchRequest, Matcher } from './matcher';
 export type NextMiddleware = (
   req: NextRequest,
   ev: NextFetchEvent,
-) => Promise<NextResponse | void> | NextResponse | void;
+) => NextMiddlewareResult | Promise<NextMiddlewareResult>;
 
 /**
  * Configuration option that uses only the "matcher" property.
