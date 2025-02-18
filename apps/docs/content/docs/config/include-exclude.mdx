@@ -1,0 +1,80 @@
+---
+title: Include/Exclude
+description: How the include/exclude configuration works?
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+We have decided to add a new way to configure middleware matching by using the **include** and **exclude** properties. This approach is simpler and more intuitive than using a single complex `matcher` property.
+
+## Usage
+
+<Callout type="warn" title="Warning">
+  You cannot use `include` and `exclude` in the `middleware.ts` file. This syntax is specific to Next MW, and Next.js does not understand it.
+</Callout>
+
+Instead of using a single `matcher` property, you can define two separate properties: **include** and **exclude**.
+- **include**: Specifies the routes on which the middleware should be executed.
+- **exclude**: Specifies the routes that should be skipped.
+
+For example, if you want your middleware to run on dashboard and profile routes but not on admin or API routes you can define your configuration like this:
+
+```typescript
+export const config = {
+  include: ['/dashboard/:path*', '/profile/:path*'],
+  exclude: ['/dashboard/admin/:path*', '/api/:path*'],
+} satisfies Config;
+```
+
+In this configuration:
+- The middleware is executed for requests matching `/dashboard/:path*` or `/profile/:path*`.
+- The middleware is skipped if the request also matches `/dashboard/admin/:path*` or `/api/:path*`.
+
+<Callout type="warn" title="Warning">
+  When using `include` and `exclude`, do not combine them with the `matcher` property. If both are defined, a runtime error will be thrown.
+</Callout>
+
+## TypeScript
+
+The `include` and `exclude` properties use the same type as `matcher`. This means you can use a simple string, a complex matcher object, or an array of these.
+
+```typescript
+config?: { 
+  include?: Matcher;
+  exclude?: Matcher;
+};
+```
+
+### Types
+
+#### Matcher
+
+```typescript
+type Matcher = string | MatcherCondition | (string | MatcherCondition)[];
+```
+
+#### MatcherObject
+
+```typescript
+interface MatcherCondition {
+  source: string;
+  regexp?: string;
+  locale?: boolean;
+  has?: MatcherElement[];
+  missing?: MatcherElement[];
+}
+```
+
+#### MatcherElement
+
+```typescript
+type MatcherElement =
+  | { type: AllowedMatcherType; key: string; value?: string }
+  | { type: string; key: string; value?: string };
+```
+
+#### AllowedMatcherType
+
+```typescript
+type AllowedMatcherType = 'header' | 'query' | 'cookie';
+```
