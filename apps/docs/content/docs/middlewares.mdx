@@ -49,10 +49,10 @@ type MiddlewareModule = {
 #### NextMiddleware
 
 ```typescript
-type NextMiddleware = (
+export type NextMiddleware = (
   req: NextRequest,
   ev: NextFetchEvent,
-) => Promise<NextResponse | void> | NextResponse | void;
+) => NextMiddlewareResult | Promise<NextMiddlewareResult>;
 ```
 
 #### Config
