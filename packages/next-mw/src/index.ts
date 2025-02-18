@@ -4,7 +4,16 @@ import {
   NextResponse,
 } from 'next/server';
 import { matchRequest, Matcher } from './matcher';
-import type { NextMiddlewareResult } from 'next/dist/server/web/types';
+
+/**
+ * Type for a Next.js middleware result.
+ */
+export type NextMiddlewareResult =
+  | NextResponse
+  | Response
+  | null
+  | undefined
+  | void;
 
 /**
  * Type for a Next.js middleware function.
