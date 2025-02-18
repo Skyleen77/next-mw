@@ -14,19 +14,44 @@ export type NextMiddleware = (
 ) => Promise<NextResponse | void> | NextResponse | void;
 
 /**
- * Type for a middleware module that includes the middleware function and optional configuration.
+ * Configuration option that uses only the "matcher" property.
+ */
+export type ConfigMatcher = {
+  matcher: Matcher;
+  include?: never;
+  exclude?: never;
+};
+
+/**
+ * Configuration option that uses "include" and/or "exclude".
+ */
+export type ConfigIncludeExclude = {
+  matcher?: never;
+  include?: Matcher;
+  exclude?: Matcher;
+};
+
+/**
+ * Configuration option type.
+ */
+export type Config = ConfigMatcher | ConfigIncludeExclude;
+
+/**
+ * Middleware module type.
+ * You can either use the "matcher" configuration
+ * or the "include"/"exclude" configuration, but not both.
  */
 export type MiddlewareModule = {
   middleware: NextMiddleware;
-  config?: {
-    matcher?: Matcher;
-  };
+  config?: Config;
 };
 
 /**
  * Composes multiple middlewares into a single middleware.
- * Middlewares are executed in the order provided.
- * If a middleware returns a response, execution stops and that response is returned.
+ * Matching logic:
+ * - If "matcher" is defined, it is used exclusively.
+ * - Otherwise, if "include" is defined, the request must match at least one pattern.
+ * - And if "exclude" is defined, the request must not match any of the patterns.
  *
  * @param modules - List of imported middleware modules.
  * @returns The composed middleware function.
@@ -34,9 +59,38 @@ export type MiddlewareModule = {
 export function middlewares(...modules: MiddlewareModule[]): NextMiddleware {
   return async function (req: NextRequest, ev: NextFetchEvent) {
     for (const module of modules) {
-      // If a matcher is defined, check if it matches the request.
-      if (module.config?.matcher && !matchRequest(req, module.config.matcher)) {
-        continue;
+      if (module.config) {
+        // Throw an error if both "matcher" and "include" or "exclude" are provided.
+        if (
+          module.config.matcher !== undefined &&
+          (module.config.include !== undefined ||
+            module.config.exclude !== undefined)
+        ) {
+          throw new Error(
+            "Cannot define both 'matcher' and 'include/exclude' in middleware config.",
+          );
+        }
+
+        // Use "matcher" if provided.
+        if (module.config.matcher !== undefined) {
+          if (!matchRequest(req, module.config.matcher)) {
+            continue;
+          }
+        } else {
+          // Use "include/exclude" matching.
+          if (
+            module.config.include !== undefined &&
+            !matchRequest(req, module.config.include)
+          ) {
+            continue;
+          }
+          if (
+            module.config.exclude !== undefined &&
+            matchRequest(req, module.config.exclude)
+          ) {
+            continue;
+          }
+        }
       }
       const result = await module.middleware(req, ev);
       if (result) {

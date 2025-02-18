@@ -3,7 +3,7 @@ import './globals.css';
 
 import { RootProvider } from 'fumadocs-ui/provider';
 import { Inter } from 'next/font/google';
-import { source } from '@/lib/source';
+import Providers from './providers';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -37,7 +37,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             defaultTheme: 'dark',
           }}
         >
-          {children}
+          <Providers>{children}</Providers>
         </RootProvider>
       </body>
     </html>

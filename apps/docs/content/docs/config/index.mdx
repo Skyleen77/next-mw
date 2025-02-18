@@ -1,0 +1,75 @@
+---
+title: Config
+description: How to configure Config in Next MW?
+---
+
+In Next MW, you have two ways to define when your middleware should run. You can either use the traditional Next.js approach with the `matcher` property or take advantage of a new, more explicit and intuitive configuration using the **include** and **exclude** properties.
+
+## Two Configuration Approaches
+
+### 1. Using `matcher`
+
+The traditional approach is to use a single `matcher` property to define which routes the middleware applies to. This method leverages Next.js' built-in route matching logic.
+
+**Example:**
+```typescript
+export const config = {
+  matcher: '/about/:path*',
+} satisfies Config;
+```
+
+### 2. Using `include` and `exclude`
+
+The new approach allows you to specify two separate properties:
+- **include**: Defines the routes on which the middleware should be executed.
+- **exclude**: Defines the routes that should be skipped.
+
+This approach is simpler and more intuitive. It makes your configuration more declarative and easier to understand.
+
+**Example:**
+```typescript
+export const config = {
+  include: ['/dashboard/:path*', '/profile/:path*'],
+  exclude: ['/dashboard/admin/:path*', '/api/:path*'],
+} satisfies Config;
+```
+
+In this configuration:
+- The middleware will run on requests matching `/dashboard/:path*` or `/profile/:path*`.
+- The middleware will be skipped for requests matching `/dashboard/admin/:path*` or `/api/:path*`.
+
+## TypeScript
+
+The configuration is strongly typed to ensure that you can either use the `matcher` property or the `include`/`exclude` properties, but not both at the same time. Here are the relevant types:
+
+```typescript
+config?: Config;
+```
+
+### Types
+
+#### Config
+
+```typescript
+type Config = ConfigMatcher | ConfigIncludeExclude;
+```
+
+#### ConfigMatcher
+
+```typescript
+type ConfigMatcher = {
+  matcher: Matcher;
+  include?: never;
+  exclude?: never;
+};
+```
+
+#### ConfigIncludeExclude
+
+```typescript
+type ConfigIncludeExclude = {
+  matcher?: never;
+  include?: Matcher;
+  exclude?: Matcher;
+};
+```
