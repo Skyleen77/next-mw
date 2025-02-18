@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import type { Config } from 'next-mw';
 import type { NextRequest } from 'next/server';
 
 /**
@@ -36,4 +37,4 @@ export const config = {
     },
     '/admin/:path*',
   ],
-};
+} satisfies Config;

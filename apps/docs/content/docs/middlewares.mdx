@@ -42,9 +42,7 @@ middlewares(...modules: MiddlewareModule[]): NextMiddleware;
 ```typescript
 type MiddlewareModule = {
   middleware: NextMiddleware;
-  config?: {
-    matcher?: Matcher;
-  };
+  config?: Config;
 };
 ```
 
@@ -57,7 +55,7 @@ type NextMiddleware = (
 ) => Promise<NextResponse | void> | NextResponse | void;
 ```
 
-#### Matcher
+#### Config
 
-See [matcher](/docs/matcher).
+See [config](/docs/config).
 
