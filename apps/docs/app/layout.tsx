@@ -19,6 +19,7 @@ export const metadata = {
     'next-mw',
     'next-middleware',
     'next-middlewares',
+    'nextjs',
   ],
 };
 
